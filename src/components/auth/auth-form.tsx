@@ -4,18 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Loader2 } from "lucide-react";
-import axios from "axios";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 
 import {
   Card,
@@ -23,11 +13,10 @@ import {
   CardTitle,
   CardContent,
   CardDescription,
-  CardFooter,
 } from "@/components/ui/card";
 import AuthInput from "./auth-input";
 import { useState } from "react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { getErrorMessage } from "@/utils/errors";
 
 const AuthSchema = z.object({
@@ -37,7 +26,14 @@ const AuthSchema = z.object({
 
 type AuthFormData = z.infer<typeof AuthSchema>;
 
-const AuthForm = () => {
+const AuthForm = ({
+  type = "login",
+  description = "Create your account now",
+  title = "Get Started",
+  successMessage = "L'utilisateur a été créer avec succèss.",
+  errorMessage = "Une erreur est survenue lors de la soumission.",
+  buttonLabel = "Créer mon compte",
+}) => {
   const form = useForm<AuthFormData>({
     resolver: zodResolver(AuthSchema),
     defaultValues: {
@@ -54,13 +50,17 @@ const AuthForm = () => {
   async function onSubmit(data: AuthFormData) {
     setIsLoading(true);
     try {
-      const res = await fetch("http://localhost:5500/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json", // Définir le type de contenu
-        },
-        body: JSON.stringify(data),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_AUTH_ENDPOINT}/${type}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json", // Définir le type de contenu
+          },
+          body: JSON.stringify(data),
+          credentials: "include",
+        }
+      );
 
       const result = await res.json();
 
@@ -72,12 +72,12 @@ const AuthForm = () => {
         return;
       }
 
-      setSuccess("L'utilisateur a été créer avec succèss");
+      setSuccess(successMessage);
       alert("L'utilisateur a été créer avec succèss");
-      router.push("/");
+      // router.push("/");
     } catch (error) {
       console.log("🚀 ~ onSubmit ~ error:ERROR", error);
-      setError("Une erreur est survenue lors de la soumission.");
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -86,8 +86,8 @@ const AuthForm = () => {
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader className="text-center">
-        <CardTitle className="text-5xl">Get Started</CardTitle>
-        <CardDescription>Create your account now</CardDescription>
+        <CardTitle className="text-5xl">{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -117,7 +117,7 @@ const AuthForm = () => {
               {isLoading ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : (
-                "Create your account"
+                buttonLabel
               )}
             </Button>
           </form>
