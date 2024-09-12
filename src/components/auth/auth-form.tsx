@@ -74,7 +74,7 @@ const AuthForm = ({
 
       setSuccess(successMessage);
       alert("L'utilisateur a été créer avec succèss");
-      // router.push("/");
+      router.push("/");
     } catch (error) {
       console.log("🚀 ~ onSubmit ~ error:ERROR", error);
       setError(errorMessage);

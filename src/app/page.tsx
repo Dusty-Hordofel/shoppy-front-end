@@ -1,5 +1,8 @@
 "use client";
 
+import { navLinksData } from "@/components/navbar/data/userNavLinksData";
+import { Navigation } from "@/components/navbar/Navigation";
+
 // import { useRouter } from "next/navigation"; // Use App Router navigation hook
 // import { Button } from "@/components/ui/button";
 // import { useAppDispatch, useAppSelector } from "@/hooks/redux/use-redux-hooks";
@@ -24,6 +27,7 @@ export default function Home() {
 
   return (
     <>
+      <Navigation navLinks={navLinksData} />
       <h1>Welcome to the Tchat</h1>
       {/* <Button onClick={() => dispatch(logout())}>Se deconnecter</Button> */}
       {/* <SidebarHeader /> */}
