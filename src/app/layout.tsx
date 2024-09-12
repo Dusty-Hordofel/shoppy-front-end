@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
-import authenticated from "@/components/auth/authenticated";
+import authenticated from "@/actions/auth/authenticated.action";
 // import ClientProviders from "@/components/providers/client-providers";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -17,7 +17,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const isAuthenticated = authenticated();
+  const isAuthenticated = await authenticated();
   console.log("🚀 ~ isAuthenticated:", isAuthenticated);
   return (
     <html lang="en">
