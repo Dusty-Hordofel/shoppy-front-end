@@ -22,7 +22,7 @@ export default function AuthInput({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="text-gray-500 font-light">{label}</FormLabel>
+          <FormLabel>{label}</FormLabel>
           <FormControl>
             <Input {...field} {...props} />
           </FormControl>

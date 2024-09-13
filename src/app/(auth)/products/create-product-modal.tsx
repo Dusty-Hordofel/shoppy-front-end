@@ -22,19 +22,16 @@ import {
   CardContent,
   CardDescription,
 } from "@/components/ui/card";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getErrorMessage } from "@/utils/errors";
 import AuthInput from "@/components/auth/auth-input";
 import { Textarea } from "@/components/ui/textarea";
-
-const ProductSchema = z.object({
-  name: z.string().min(2, "Product name must be at least 2 characters long"),
-  description: z
-    .string()
-    .min(8, "Description must be at least 8 characters long"),
-  price: z.coerce.number().min(1, "Price must be at least 1€"),
-});
+import { Input } from "@/components/ui/input";
+import axios from "axios";
+import FileInput from "./file-input";
+import { handleError, resetMessages } from "@/utils/notifications";
+import { ProductSchema } from "./schemas";
 
 type ProductFormData = z.infer<typeof ProductSchema>;
 
@@ -54,40 +51,87 @@ const ProductModal = ({
     },
   });
   const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [picture, setPicture] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   async function onSubmit(data: ProductFormData) {
-    setIsLoading(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/products`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json", // Définir le type de contenu
-        },
-        body: JSON.stringify(data),
-        credentials: "include",
-      });
+      resetMessages(setError, setSuccess);
 
-      const result = await res.json();
-
-      if (!res.ok) {
-        setError(getErrorMessage(result));
-        alert(`Erreur: ${getErrorMessage(result)}`);
-        return;
+      if (!picture) {
+        return handleError(setError, "Please provide a picture");
       }
 
-      setSuccess(successMessage);
-      alert("Le Produit a été créer avec succèss");
-      //   router.push("/");
+      const uploadedImage = await uploadImage();
+      console.log("🚀 ~ onSubmit ~ uploadedImage:", uploadedImage);
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/products`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ...data, image: uploadedImage.secure_url }),
+          credentials: "include",
+        }
+      );
+
+      await handleResponse(response);
     } catch (error) {
-      console.log("🚀 ~ onSubmit ~ error:ERROR", error);
-      setError(errorMessage);
+      console.error("🚀 ~ onSubmit ~ error:", error);
+      handleError(setError, "An error occurred while submitting the form.");
     } finally {
       setIsLoading(false);
     }
+  }
+
+  const handleFileChange = (files: FileList | null) => {
+    form.setValue("file", files);
+    if (files && files[0]) {
+      const file = files[0];
+      setPicture(file); // Generate a URL for the selected image
+      setPreviewUrl(URL.createObjectURL(file)); // Generate a URL for the selected image
+    } else {
+      setPreviewUrl(null);
+    }
+  };
+
+  const uploadImage = async () => {
+    let formData = new FormData();
+    formData.append(
+      "upload_preset",
+      process.env.NEXT_PUBLIC_CLOUD_SECRET as string
+    );
+    formData.append("file", picture as File);
+    const { data } = await axios.post(
+      `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+      formData
+    );
+    console.log("🚀 ~ uploadImage ~ data:", data);
+    return data;
+  };
+
+  async function handleResponse(response: any) {
+    const result = await response.json();
+    console.log("🚀 ~ handleResponse ~ result:", result);
+
+    if (!response.ok) {
+      return handleError(setError, getErrorMessage(result));
+    }
+
+    setSuccess(successMessage);
+    form.reset();
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+    setPreviewUrl(null);
+    alert("Le Produit a été créé avec succès");
   }
 
   return (
@@ -107,15 +151,6 @@ const ProductModal = ({
               type="text"
               disabled={isLoading}
             />
-
-            {/* <AuthInput
-              form={form}
-              name="description"
-              label="description"
-              placeholder="Description du produit"
-              type="text-area"
-              disabled={isLoading}
-            /> */}
 
             <FormField
               control={form.control}
@@ -144,6 +179,30 @@ const ProductModal = ({
               placeholder="Prix du produit"
               type="number"
               disabled={isLoading}
+            />
+
+            <FormField
+              control={form.control}
+              name="file"
+              render={({ field }) => (
+                <FormItem>
+                  {/* className="text-gray-500 font-light" */}
+                  <FormLabel>Picture</FormLabel>
+                  <FormControl>
+                    <FileInput
+                      handleFileChange={handleFileChange}
+                      fileInputRef={fileInputRef}
+                      previewUrl={previewUrl}
+                      disabled={isLoading}
+                      field={field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    This is your public display name.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
 
             <Button
