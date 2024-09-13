@@ -1,4 +1,4 @@
-import authenticated from "@/app/(auth)/auth/actions/authenticated.action";
+import authenticated from "@/actions/auth/authenticated.action";
 import { NextRequest } from "next/server";
 
 const unauthorizedRoutes = ["/auth/login", "/auth/register"];

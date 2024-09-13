@@ -1,11 +1,15 @@
 "use client";
-import NavbarLinks from "./NavbarLinks";
-import UserButton from "./UserButton";
+import NavbarLinks from "./navbar-links";
+import UserButton from "./user-button";
 import { Button } from "@/components/ui/button";
-import Logo from "@/components/navbar/Logo";
+// import Logo from "@/components/navbar/logo";
 import { useContext } from "react";
 import { AuthContext } from "../auth/auth-context";
 import { useRouter } from "next/navigation";
+import Logo from "./logo";
+// import Logo from "./logo";
+// import Logo from "./logo";
+// import Logo from "./Logo";
 
 // function SignInButton() {
 //   return <Button onClick={() => signIn()}>Sign in</Button>;

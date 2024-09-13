@@ -1,5 +1,5 @@
 import React from "react";
-import { NavBarLink } from "./NavBarLink";
+import { NavBarLink } from "./navbar-link";
 
 export type NavLink = {
   name: string;

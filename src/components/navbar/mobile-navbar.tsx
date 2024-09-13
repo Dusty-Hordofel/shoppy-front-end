@@ -3,12 +3,14 @@ import React, { SVGProps, useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
-import Logo from "@/components/navbar/Logo";
+// import Logo from "@/components/navbar/logo";
 // import UserButton from "./UserButton";
-import NavbarLinks from "./NavbarLinks";
+import NavbarLinks from "./navbar-links";
 import { Button } from "@/components/ui/button";
 
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import Logo from "./logo";
+// import Logo from "./Logo";
 
 export type NavLink = {
   name: string;
