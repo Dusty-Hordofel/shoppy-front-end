@@ -19,6 +19,7 @@ import { PlusIcon, XIcon } from "lucide-react";
 import { useModal } from "@/context/modal/modal-context";
 import ResultModal from "@/components/modals/result-modal";
 import Link from "next/link";
+import Checkout from "@/components/checkout/checkout";
 
 function ProductList({ products }: { products: Product[] }) {
   const { state, dispatch } = useCart();
@@ -89,12 +90,15 @@ function ProductList({ products }: { products: Product[] }) {
                 <p className="font-bold">{product.price.toFixed(2)} €</p>
               </CardContent>
               <CardFooter>
-                <Button
-                  className="w-full"
-                  onClick={() => addItemToCart({ ...product, quantity: 1 })}
-                >
-                  Ajouter au panier
-                </Button>
+                <div className="flex gap-x-4">
+                  <Button
+                    className="w-full"
+                    onClick={() => addItemToCart({ ...product, quantity: 1 })}
+                  >
+                    Ajouter au panier
+                  </Button>
+                  <Checkout productId={product.id} />
+                </div>
               </CardFooter>
             </Card>
           ))

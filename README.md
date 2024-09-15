@@ -14,4 +14,6 @@
 
 ### 6. Get Product and handle Context
 
-### 7. handle Payment
+### 7. Stripe Checkout Session && Stripe Checkout Redirect
+
+### 8. Stripe Webhooks
