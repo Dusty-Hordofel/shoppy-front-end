@@ -1,43 +1,44 @@
-import React from "react";
+// "use client";
+// import React, { useState } from "react";
 import getProducts from "../../../actions/products/get-products";
 import { Product } from "@/app/common/interfaces/product.interface";
-import ProductModal from "@/components/products/create-product-modal";
+import ProductModal from "@/components/products/product-modal";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardTitle,
+  CardHeader,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import { useCart } from "@/context/cart/cart-context";
+import { CartItem } from "@/context/cart/cart-reducer";
+import ProductList from "./product-list";
 
-const page = async () => {
+const ProductsPage = async () => {
   const products = await getProducts();
+  console.log("🚀 ~ ProductsPage ~ products:", products);
+  // const { state, dispatch } = useCart();
+
+  // const
 
   return (
-    <main className="flex justify-center items-center h-screen">
-      <div className="">
-        <ProductList products={products} />
-      </div>
-      <ProductModal
+    <main className=" bg-cyan-400">
+      {/* <div className=""> */}
+      {/* <div className="h-[500px] w-full bg-purple-300"></div> */}
+
+      <ProductList products={products} />
+      {/* </div> */}
+      {/* <ProductModal
         errorMessage="Erreur de la création du produit"
         successMessage="Produit crée avec succès"
         title="Créer un produit"
-        description="Ajout d'un nouveau produit dans votres store"
+        description="Ajout d'un nouveau produit dans votre store"
         buttonLabel="Ajouter votre produit"
-      />
+      /> */}
     </main>
   );
 };
 
-export default page;
-
-function ProductList({ products }: { products: Product[] }) {
-  return (
-    <div>
-      {products.length > 0 ? (
-        products.map(({ name, description, id, price }: Product) => (
-          <div key={id}>
-            <h2>{name}</h2>
-            <p>{description.slice(0, 10) + "..."}</p>
-            <span>${price}</span>
-          </div>
-        ))
-      ) : (
-        <p>Vous n'êtes pas autorisé à voir ces produits.</p>
-      )}
-    </div>
-  );
-}
+export default ProductsPage;

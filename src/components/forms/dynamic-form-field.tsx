@@ -1,9 +1,6 @@
 import React from "react";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { ErrorMessage } from "@hookform/error-message";
 import { Textarea } from "@/components/ui/textarea";
-import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
 import {
   Form,
   FormControl,
@@ -44,7 +41,6 @@ type DynamicFormFieldProps = {
   handleFileChange?: any;
   fileInputRef?: any;
   previewUrl?: any;
-  //   disabled,
   field?: any;
 };
 
@@ -60,7 +56,6 @@ const DynamicFormField = ({
   handleFileChange,
   fileInputRef,
   previewUrl,
-  //   disabled,
   field,
   ...props
 }: DynamicFormFieldProps) => {
@@ -112,9 +107,6 @@ const DynamicFormField = ({
                         {option.label}
                       </SelectItem>
                     ))}
-                  {/* <SelectItem value="m@example.com">m@example.com</SelectItem>
-                  <SelectItem value="m@google.com">m@google.com</SelectItem>
-                  <SelectItem value="m@support.com">m@support.com</SelectItem> */}
                 </SelectContent>
               </Select>
               <FormDescription>{description}</FormDescription>
@@ -131,7 +123,6 @@ const DynamicFormField = ({
           name="file"
           render={({ field }) => (
             <FormItem>
-              {/* className="text-gray-500 font-light" */}
               <FormLabel>Picture</FormLabel>
               <FormControl>
                 <FileInput
@@ -150,17 +141,6 @@ const DynamicFormField = ({
           )}
         />
       );
-
-    //   <Select
-    //   id={name}
-    //   {...register(name)}
-    //   defaultValue={defaultValue}
-    // >
-    //   {options.map(option => (
-    //     <SelectItem key={option.value} value={option.value}>
-    //       {option.label}
-    //     </SelectItem>
-    //   ))}
 
     case "input":
     default:
@@ -184,22 +164,3 @@ const DynamicFormField = ({
 };
 
 export default DynamicFormField;
-
-export function AuthInput({ form, name, label, description, ...props }: any) {
-  return (
-    <FormField
-      control={form.control}
-      name={name}
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>{label}</FormLabel>
-          <FormControl>
-            <Input {...field} {...props} />
-          </FormControl>
-          <FormDescription>{description}</FormDescription>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-  );
-}

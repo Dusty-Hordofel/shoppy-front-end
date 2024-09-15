@@ -7,6 +7,8 @@ import { useContext } from "react";
 import { AuthContext } from "../auth/auth-context";
 import { useRouter } from "next/navigation";
 import Logo from "./logo";
+import CartIcon from "../cart/cart-icon";
+// import CartIcon from "../cart/Cart-icon";
 // import Logo from "./logo";
 // import Logo from "./logo";
 // import Logo from "./Logo";
@@ -27,17 +29,13 @@ export const DesktopNavbar = ({ navLinks }: { navLinks: NavLink[] }) => {
   // isAuthenticated ? router.push("/") : router.push("/auth/login");
 
   return (
-    <header className="hidden min-[840px]:flex items-center justify-between  ">
-      <div className="flex items-center justify-center">
+    <header className="hidden min-[840px]:flex items-center justify-between">
+      <div className="flex items-center justify-center gap-x-10">
         <Logo />
-
-        <div className=" flex w-auto gap-x-2 items-center justify-center ml-20">
+        <div className=" flex w-auto gap-x-2 items-center justify-center">
           <NavbarLinks navLinks={navLinks} />
         </div>
-      </div>
-      <div className="flex items-center">
-        {/* {session?.user && <UserButton user={session?.user} />}
-        {!session?.user && status !== "loading" && <SignInButton />} */}
+        <CartIcon />
       </div>
     </header>
   );

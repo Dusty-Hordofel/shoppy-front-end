@@ -2,6 +2,7 @@
 
 import { ReactElement, ReactNode } from "react";
 import { AuthContext } from "../components/auth/auth-context";
+import { CartProvider } from "@/context/cart/cart-context";
 
 interface ProviderProps {
   children: ReactNode;

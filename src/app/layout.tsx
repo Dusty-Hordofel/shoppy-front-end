@@ -3,6 +3,11 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
 import authenticated from "@/actions/auth/authenticated.action";
+import { CartProvider } from "@/context/cart/cart-context";
+import { Navigation } from "@/components/navbar/navigation";
+import { navLinksData } from "@/components/navbar/data/userNavLinksData";
+import ClientOnly from "@/components/client-only";
+import ModalProvider from "@/context/modal/modal-context";
 // import ClientProviders from "@/components/providers/client-providers";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -17,12 +22,25 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const isAuthenticated = await authenticated();
-  // console.log("🚀 ~ isAuthenticated:1", isAuthenticated);
+  // await
+  const isAuthenticated = authenticated();
+
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Providers authenticated={isAuthenticated}>{children}</Providers>
+        <ClientOnly>
+          <Providers authenticated={isAuthenticated}>
+            <ModalProvider>
+              <CartProvider>
+                <Navigation navLinks={navLinksData} />
+                {/* <div className="h-72 w-full"></div> */}
+                {/* <div style={{ paddingTop: "500px" }}> */}
+                {children}
+                {/* </div> */}
+              </CartProvider>
+            </ModalProvider>
+          </Providers>
+        </ClientOnly>
       </body>
     </html>
   );

@@ -18,6 +18,7 @@ import AuthInput from "./auth-input";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { getErrorMessage } from "@/app/common/utils/errors";
+import DynamicFormField from "../forms/dynamic-form-field";
 
 const AuthSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -92,22 +93,24 @@ const AuthForm = ({
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            {/* <AuthInput
+            <DynamicFormField
+              inputType="input"
               form={form}
               name="email"
               label="Email"
               placeholder="Email"
+              type="text"
               disabled={isLoading}
             />
-
-            <AuthInput
+            <DynamicFormField
+              inputType="input"
               form={form}
               name="password"
               label="Password"
-              placeholder="password"
+              placeholder="Password"
+              type="password"
               disabled={isLoading}
-            /> */}
-
+            />
             <Button
               type="submit"
               className="w-full"
