@@ -18,7 +18,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const isAuthenticated = await authenticated();
-  console.log("🚀 ~ isAuthenticated:", isAuthenticated);
+  // console.log("🚀 ~ isAuthenticated:1", isAuthenticated);
   return (
     <html lang="en">
       <body className={inter.className}>

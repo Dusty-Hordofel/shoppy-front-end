@@ -1,5 +1,5 @@
-import { DesktopNavbar } from "./DesktopNavbar";
-import { MobileNavbar } from "./MobileNavbar";
+import { DesktopNavbar } from "./desktop-navbar";
+import { MobileNavbar } from "./mobile-navbar";
 
 export type NavLink = {
   name: string;

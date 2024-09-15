@@ -5,15 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 
 import {
   Card,
@@ -24,14 +16,11 @@ import {
 } from "@/components/ui/card";
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getErrorMessage } from "@/utils/errors";
-import AuthInput from "@/components/auth/auth-input";
-import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
+import { getErrorMessage } from "@/app/common/utils/errors";
 import axios from "axios";
-import FileInput from "./file-input";
-import { handleError, resetMessages } from "@/utils/notifications";
-import { ProductSchema } from "./schemas";
+import { handleError, resetMessages } from "@/app/common/utils/notifications";
+import { ProductSchema } from "@/schemas";
+import DynamicFormField from "../forms/dynamic-form-field";
 
 type ProductFormData = z.infer<typeof ProductSchema>;
 
@@ -143,7 +132,8 @@ const ProductModal = ({
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <AuthInput
+            <DynamicFormField
+              inputType="input"
               form={form}
               name="name"
               label="Nom"
@@ -152,27 +142,18 @@ const ProductModal = ({
               disabled={isLoading}
             />
 
-            <FormField
-              control={form.control}
+            <DynamicFormField
+              inputType="textarea"
+              form={form}
               name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Description du produit"
-                      className="resize-none"
-                      {...field}
-                    />
-                  </FormControl>
-                  {/* <FormDescription>
-                    You can <span>@mention</span> other users and organizations.
-                  </FormDescription> */}
-                  <FormMessage />
-                </FormItem>
-              )}
+              label="Description"
+              placeholder="Prix du produit"
+              disabled={isLoading}
+              lines={5}
             />
-            <AuthInput
+
+            <DynamicFormField
+              inputType="input"
               form={form}
               name="price"
               label="price"
@@ -181,28 +162,26 @@ const ProductModal = ({
               disabled={isLoading}
             />
 
-            <FormField
-              control={form.control}
-              name="file"
-              render={({ field }) => (
-                <FormItem>
-                  {/* className="text-gray-500 font-light" */}
-                  <FormLabel>Picture</FormLabel>
-                  <FormControl>
-                    <FileInput
-                      handleFileChange={handleFileChange}
-                      fileInputRef={fileInputRef}
-                      previewUrl={previewUrl}
-                      disabled={isLoading}
-                      field={field}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
+            {/* <DynamicFormField
+              inputType="select"
+              form={form}
+              name="selectOption"
+              label="Select a country"
+              placeholder="Prix du produit"
+              disabled={isLoading}
+              options={[
+                { value: "us", label: "United States", id: "us" },
+                { value: "ca", label: "Canada", id: "ca" },
+                { value: "uk", label: "United Kingdom", id: "uk" },
+              ]}
+            /> */}
+            <DynamicFormField
+              inputType="file"
+              form={form}
+              handleFileChange={handleFileChange}
+              fileInputRef={fileInputRef}
+              previewUrl={previewUrl}
+              disabled={isLoading}
             />
 
             <Button

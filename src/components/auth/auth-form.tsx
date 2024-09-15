@@ -17,7 +17,7 @@ import {
 import AuthInput from "./auth-input";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { getErrorMessage } from "@/utils/errors";
+import { getErrorMessage } from "@/app/common/utils/errors";
 
 const AuthSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -92,7 +92,7 @@ const AuthForm = ({
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <AuthInput
+            {/* <AuthInput
               form={form}
               name="email"
               label="Email"
@@ -106,7 +106,7 @@ const AuthForm = ({
               label="Password"
               placeholder="password"
               disabled={isLoading}
-            />
+            /> */}
 
             <Button
               type="submit"

@@ -28,7 +28,7 @@ import {
 import AuthInput from "./auth-input";
 import { useState } from "react";
 import { redirect, useRouter } from "next/navigation";
-import { getErrorMessage } from "@/utils/errors";
+import { getErrorMessage } from "@/app/common/utils/errors";
 
 const RegisterSchema = z.object({
   email: z.string().email("Invalid email address"),

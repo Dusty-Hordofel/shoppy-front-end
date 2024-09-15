@@ -21,10 +21,10 @@ export type NavLink = {
 };
 export const DesktopNavbar = ({ navLinks }: { navLinks: NavLink[] }) => {
   const router = useRouter();
-  const isAuthenticated = useContext(AuthContext);
-  console.log("🚀 ~ DesktopNavbar ~ isAuthenticated:CLIENT", isAuthenticated);
+  // const isAuthenticated = useContext(AuthContext);
+  // console.log("🚀 ~ DesktopNavbar ~ isAuthenticated:CLIENT", isAuthenticated);
 
-  isAuthenticated ? router.push("/") : router.push("/auth/login");
+  // isAuthenticated ? router.push("/") : router.push("/auth/login");
 
   return (
     <header className="hidden min-[840px]:flex items-center justify-between  ">
